@@ -1,6 +1,17 @@
 <?php
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
+//массив проектов
+$masProject = array('Входящие','Учеба','Работа','Домашние деkа','Авто'); 
+//двумерный массив задач
+$masTask = array(
+    array( 'task' => 'Собеседование в IT компании', 'date' => '01.12.2019','cathegory' => 'Работа', 'done' => false),
+    array( 'task' => 'Выполнить тестовое задание', 'date' => '25.12.2019','cathegory' => 'Работа', 'done' => false),
+    array( 'task' => 'Сделать задание первого раздела', 'date' => '21.12.2019','cathegory' => 'Учеба', 'done' => true),
+    array( 'task' => 'Встреча с другом', 'date' => '22.12.2019','cathegory' => 'Входящие', 'done' => false),
+    array( 'task' => 'Купить корм для кота', 'date' => null,'cathegory' => 'Домашние дела', 'done' => false),
+    array( 'task' => 'Заказать пиццу', 'date' => null,'cathegory' => 'Домашние дела', 'done' => false),
+);
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -42,10 +53,15 @@ $show_complete_tasks = rand(0, 1);
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                        <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#">Название проекта</a>
+                        <?php
+                        foreach ($masProject as $value){
+                            echo '<li class="main-navigation__list-item">
+                            <a class="main-navigation__list-item-link" href="#">'.$value.'</a>
                             <span class="main-navigation__list-item-count">0</span>
-                        </li>
+                            </li>';
+                        }
+                        
+                        ?>
                     </ul>
                 </nav>
 
@@ -71,7 +87,6 @@ $show_complete_tasks = rand(0, 1);
                     </nav>
 
                     <label class="checkbox">
-                        <!--добавить сюда атрибут "checked", если переменная $show_complete_tasks равна единице -->
                         <?php if($show_complete_tasks == 1)
                         {echo '<input class="checkbox__input visually-hidden" type="checkbox" checked>';}
                             else {'<input class="checkbox__input visually-hidden" type="checkbox">';}
@@ -82,39 +97,43 @@ $show_complete_tasks = rand(0, 1);
                 </div>
 
                 <table class="tasks">
-                    <tr class="tasks__item task">
-                        <td class="task__select">
-                            <label class="checkbox task__checkbox">
-                                <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                <span class="checkbox__text">Сделать главную страницу Дела в порядке</span>
-                            </label>
-                        </td>
-
-                        <td class="task__file">
-                            <a class="download-link" href="#">Home.psd</a>
-                        </td>
-
-                        <td class="task__date"></td>
-                    </tr>
-                    <?php 
-                    if($show_complete_tasks == 1){
-                        echo '
-                        <tr class="tasks__item task task--completed">
-                        <td class="task__select">
-                            <label class="checkbox task__checkbox">
-                                <input class="checkbox__input visually-hidden" type="checkbox" checked>
-                                <span class="checkbox__text">Записаться на интенсив "Базовый PHP"</span>
-                            </label>
-                        </td>
-                        <td class="task__date">10.10.2019</td>
-                        <td class="task__controls"></td>
-                    </tr>
-                        ';
-                    }
-                    else {
-                        echo '';
-                    }
-                    ?>
+                        <?php
+                        for($i=0;$i<6;$i++){
+                                if ($masTask[$i]['done']){
+                                    if ($show_complete_tasks){
+                                echo '<tr class="tasks__item task task--completed">
+                                <td class="task__select">
+                                <label class="checkbox task__checkbox"><input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+                                <span class="checkbox__text">'.$masTask[$i]['task'].'</span>
+                                </label>
+                                </td>
+                                <td class="task__file">
+                                <a class="download-link" href="#"></a>
+                                </td>
+                                <td class="task__date">'.$masTask[$i]['date'].'</td>
+                                <td class="task__controls"></td>
+                                </tr>
+                                ';
+                                    }
+                                    else {continue;}
+                                }
+                                else{
+                                    echo '<tr class="tasks__item task ">
+                                    <td class="task__select">
+                                    <label class="checkbox task__checkbox"><input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+                                    <span class="checkbox__text">'.$masTask[$i]['task'].'</span>
+                                    </label>
+                                    </td>
+                                    <td class="task__file">
+                                    <a class="download-link" href="#"></a>
+                                    </td>
+                                    <td class="task__date">'.$masTask[$i]['date'].'</td>
+                                    <td class="task__controls"></td>
+                                    </tr>
+                                    ';
+                                };
+                            };
+                            ?>                    
                 </table>
             </main>
         </div>
