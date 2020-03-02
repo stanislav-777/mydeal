@@ -2,7 +2,7 @@
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 //массив проектов
-$masProject = array('Входящие','Учеба','Работа','Домашние деkа','Авто'); 
+$masProject = array('Входящие','Учеба','Работа','Домашние дела','Авто'); 
 //двумерный массив задач
 $masTask = array(
     array( 'task' => 'Собеседование в IT компании', 'date' => '01.12.2019','cathegory' => 'Работа', 'done' => false),
@@ -12,6 +12,16 @@ $masTask = array(
     array( 'task' => 'Купить корм для кота', 'date' => null,'cathegory' => 'Домашние дела', 'done' => false),
     array( 'task' => 'Заказать пиццу', 'date' => null,'cathegory' => 'Домашние дела', 'done' => false),
 );
+
+function numberOfTasks($arr,$nameProject){
+    $count = 0;
+for($i=0;$i<6;$i++){
+    if ($arr[$i]['cathegory'] === $nameProject){
+        $count++;
+    }
+}
+return $count;
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -57,7 +67,7 @@ $masTask = array(
                         foreach ($masProject as $value){
                             echo '<li class="main-navigation__list-item">
                             <a class="main-navigation__list-item-link" href="#">'.$value.'</a>
-                            <span class="main-navigation__list-item-count">0</span>
+                            <span class="main-navigation__list-item-count">'.numberOfTasks($masTask,$value).'</span>
                             </li>';
                         }
                         
