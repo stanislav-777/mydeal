@@ -50,9 +50,9 @@
                         <?php
                         $flagTaskImportant = '';
                         for($i=0;$i<6;$i++){
-                                if ($masTask[$i]['done']){
+                                if ((bool)($masTask[$i]['statusTask'])){
                                     if ($show_complete_tasks){
-                                        if ((strtotime($masTask[$i]['date']) - time()) <=24*3600) {
+                                        if ((strtotime($masTask[$i]['deadline']) - time()) <=24*3600) {
                                             $flagTaskImportant = 'task--important';
                                         } else {
                                             $flagTaskImportant = '';
@@ -60,13 +60,13 @@
                                 echo '<tr class="tasks__item task task--completed '.$flagTaskImportant.'">
                                 <td class="task__select">
                                 <label class="checkbox task__checkbox"><input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                <span class="checkbox__text">'.$masTask[$i]['task'].'</span>
+                                <span class="checkbox__text">'.$masTask[$i]['nameTask'].'</span>
                                 </label>
                                 </td>
                                 <td class="task__file">
                                 <a class="download-link" href="#"></a>
                                 </td>
-                                <td class="task__date ">'.$masTask[$i]['date'].'</td>
+                                <td class="task__date ">'.$masTask[$i]['deadline'].'</td>
                                 <td class="task__controls"></td>
                                 </tr>
                                 ';
@@ -74,7 +74,7 @@
                                     else {continue;}
                                 }
                                 else{
-                                    if (strtotime($masTask[$i]['date']) - time() <=24*3600) {
+                                    if (strtotime($masTask[$i]['deadline']) - time() <=24*3600) {
                                         $flagTaskImportant = 'task--important';
                                     }
                                     else {
@@ -83,13 +83,13 @@
                                     echo '<tr class="tasks__item task '.$flagTaskImportant.'">
                                     <td class="task__select">
                                     <label class="checkbox task__checkbox"><input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                    <span class="checkbox__text">'.$masTask[$i]['task'].'</span>
+                                    <span class="checkbox__text">'.$masTask[$i]['nameTask'].'</span>
                                     </label>
                                     </td>
                                     <td class="task__file">
                                     <a class="download-link" href="#"></a>
                                     </td>
-                                    <td class="task__date">'.$masTask[$i]['date'].'</td>
+                                    <td class="task__date">'.$masTask[$i]['deadline'].'</td>
                                     <td class="task__controls"></td>
                                     </tr>
                                     ';
