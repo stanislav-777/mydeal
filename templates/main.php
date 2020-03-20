@@ -4,13 +4,20 @@
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
                         <?php
-                        foreach ($masProject as $value){
-                            echo '<li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#">'.$value.'</a>
-                            <span class="main-navigation__list-item-count">'.numberOfTasks($masTask,$value).'</span>
+                        foreach ($masProject as $project){
+                            if ($project['id'] == $idProject){
+                            echo '<li class="main-navigation__list-item--active">
+                            <a class="main-navigation__list-item-link" href="'.$project['href'].'">'.$project['name'].'</a>
+                            <span class="main-navigation__list-item-count">'.$project['number'].'</span>
                             </li>';
+                            }
+                            else{
+                                echo '<li class="main-navigation__list-item">
+                                <a class="main-navigation__list-item-link" href="'.$project['href'].'">'.$project['name'].'</a>
+                                <span class="main-navigation__list-item-count">'.$project['number'].'</span>
+                                </li>';
+                            }
                         }
-                        
                         ?>
                     </ul>
                 </nav>
@@ -49,10 +56,10 @@
                 <table class="tasks">
                         <?php
                         $flagTaskImportant = '';
-                        for($i=0;$i<6;$i++){
-                                if ((bool)($masTask[$i]['statusTask'])){
+                        foreach($masTask as $task){
+                                if ((bool)($task['statusTask'])){
                                     if ($show_complete_tasks){
-                                        if ((strtotime($masTask[$i]['deadline']) - time()) <=24*3600) {
+                                        if ((strtotime($task['deadline']) - time()) <=24*3600) {
                                             $flagTaskImportant = 'task--important';
                                         } else {
                                             $flagTaskImportant = '';
@@ -60,13 +67,13 @@
                                 echo '<tr class="tasks__item task task--completed '.$flagTaskImportant.'">
                                 <td class="task__select">
                                 <label class="checkbox task__checkbox"><input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                <span class="checkbox__text">'.$masTask[$i]['nameTask'].'</span>
+                                <span class="checkbox__text">'.$task['nameTask'].'</span>
                                 </label>
                                 </td>
                                 <td class="task__file">
                                 <a class="download-link" href="#"></a>
                                 </td>
-                                <td class="task__date ">'.$masTask[$i]['deadline'].'</td>
+                                <td class="task__date ">'.$task['deadline'].'</td>
                                 <td class="task__controls"></td>
                                 </tr>
                                 ';
@@ -74,7 +81,7 @@
                                     else {continue;}
                                 }
                                 else{
-                                    if (strtotime($masTask[$i]['deadline']) - time() <=24*3600) {
+                                    if (strtotime($task['deadline']) - time() <=24*3600) {
                                         $flagTaskImportant = 'task--important';
                                     }
                                     else {
@@ -83,13 +90,13 @@
                                     echo '<tr class="tasks__item task '.$flagTaskImportant.'">
                                     <td class="task__select">
                                     <label class="checkbox task__checkbox"><input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                    <span class="checkbox__text">'.$masTask[$i]['nameTask'].'</span>
+                                    <span class="checkbox__text">'.$task['nameTask'].'</span>
                                     </label>
                                     </td>
                                     <td class="task__file">
                                     <a class="download-link" href="#"></a>
                                     </td>
-                                    <td class="task__date">'.$masTask[$i]['deadline'].'</td>
+                                    <td class="task__date">'.$task['deadline'].'</td>
                                     <td class="task__controls"></td>
                                     </tr>
                                     ';

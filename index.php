@@ -7,17 +7,39 @@ require_once 'connection.php';
 $masProject = array(); 
 //двумерный массив задач
 $masTask = array();
+//текущий пользователь  тут определить авторизированного пользователя 
 $idUser = 1;
 
 $link = mysqli_connect($host,$user,$password,$database) or die("Ошибка " . mysqli_error($link));
 
-$query = mysqli_query($link, "SELECT `idProject`, `idUser`, `nameProject` FROM `project`") or die("Ошибка " . mysqli_error($link)); 
+$query = mysqli_query($link, "SELECT * FROM `project` WHERE idUser=".$idUser) or die("Ошибка " . mysqli_error($link)); 
         while ($result = mysqli_fetch_array($query)) {
             if ((int)$result['idUser'] === $idUser){
-            array_push($masProject, $result['nameProject']);
+                $masProject[] = array(
+                    'name' => $result['nameProject'],
+                    'number'=>numberOfTasks($result['idProject'],$idUser),
+                    'href' => '?id='.$result['idProject'],
+                    'id' => $result['idProject']
+                );
             }
         }
-$query = mysqli_query($link,"SELECT `idUser`,`idProject`, `dateStart`, `statusTask`,`nameTask`,`fileTask`,`deadline` FROM `tasks`") or die("Ошибка " . mysqli_error($link));       
+$idProject = 0;         
+if(isset($_GET['id'])){
+    $idProject = intval($_GET['id']);
+}
+if($idProject != 0){
+$query  = mysqli_query($link,"SELECT COUNT(*) FROM project WHERE idUser='".$idUser."' AND idProject='".$idProject."'") or die("Ошибка " . mysqli_error($link)); 
+$result = mysqli_fetch_array($query);
+if ($result['COUNT(*)'] == 0){
+    exit(header('Location: /error404/'));
+}
+}
+if ($idProject == 0){
+    $query = mysqli_query($link,"SELECT * FROM `tasks` WHERE idUser=".$idUser) or die("Ошибка " . mysqli_error($link));
+} 
+else{
+    $query = mysqli_query($link,"SELECT * FROM `tasks` WHERE idProject=".$idProject." AND idUser=".$idUser) or die("Ошибка " . mysqli_error($link)); 
+}             
 while ($data = mysqli_fetch_array($query)) {
     $masTask[] = array(
     'idUser' => $data['idUser'],
@@ -40,26 +62,16 @@ while ($data = mysqli_fetch_array($query)) {
 $show_complete_tasks = rand(0, 1);
 
 
-function numberOfTasks($arr,$nameProject){
+function numberOfTasks($idProject,$idUser){
     GLOBAL $link;
-    $query = mysqli_query($link, "SELECT `idProject`, `idUser`, `nameProject` FROM `project`") or die("Ошибка " . mysqli_error($link)); 
-    $count = 0;
-    while ($result = mysqli_fetch_array($query)) {
-        if ($result['nameProject'] === $nameProject){
-            for($i=0;$i<count($arr);$i++){
-                if ($arr[$i]['idProject'] == $result['idProject']){
-                $count++;
-                }
-            }
-        }
-    }
-
-return $count;
+    $query = mysqli_query($link, "SELECT COUNT(*) FROM tasks WHERE idUser='".$idUser."' AND idProject='".$idProject."'") or die("Ошибка " . mysqli_error($link)); 
+    $result = mysqli_fetch_array($query);
+    return $result['COUNT(*)'];
 }
 
 
 $items_list = [];
-$page_content = include_template('main.php', ['items' => $items_list,'show_complete_tasks'=>$show_complete_tasks,'masTask' => $masTask,'masProject' => $masProject]);
+$page_content = include_template('main.php', ['idProject'=>$idProject,'items' => $items_list,'show_complete_tasks'=>$show_complete_tasks,'masTask' => $masTask,'masProject' => $masProject]);
 $layout_content = include_template('layout.php',
 ['content' => $page_content, 'title' => 'Мои дела']);
 print($layout_content);
