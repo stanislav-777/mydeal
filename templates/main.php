@@ -71,7 +71,7 @@
                                 </label>
                                 </td>
                                 <td class="task__file">
-                                <a class="download-link" href="#"></a>
+                                <a class="download-link" href="'.$task['fileTask'].'"></a>
                                 </td>
                                 <td class="task__date ">'.$task['deadline'].'</td>
                                 <td class="task__controls"></td>
@@ -94,7 +94,7 @@
                                     </label>
                                     </td>
                                     <td class="task__file">
-                                    <a class="download-link" href="#"></a>
+                                    <a class="download-link" href="'.$task['fileTask'].'"></a>
                                     </td>
                                     <td class="task__date">'.$task['deadline'].'</td>
                                     <td class="task__controls"></td>
