@@ -14,21 +14,19 @@ if (isset($_POST['submit_task'])){
         $errorText1 = 'Дата должна быть в формате год-месяц-день'; 
     }
     //беды с датой
-    $bool2 = (strtotime(time())>strtotime($data['date']));
-    if (!$bool2) {
+    $bool2 = !(time()<=strtotime($data['date']));
+    if ($bool2) {
         $errorText2 = 'дата не прошедее';
     }
-    //забудь убрать 
-    $bool2= true;
     $bool3 = (issetProject($idUser,$data['project']));
     if (!$bool3) {
-        $errorText3 = 'проекта нет'; 
+        $errorText3 = 'Неккоректный ввод названия проекта'; 
     }
-    $bool4 = ($date['name']!=='');
-    if (!$bool4) {
-        $errorText4 = 'название не пусто';
+    $bool4 = !($data['name']!=='');
+    if ($bool4) {
+        $errorText4 = 'Введите название задачи';
     }
-    $bool =  $bool1 && $bool2 && $bool3 && $bool4;
+    $bool =  $bool1 && !$bool2 && $bool3 && !$bool4;
     if ($bool){
         $tmp = time();
         //разобратсья со слешем
@@ -40,9 +38,9 @@ if (isset($_POST['submit_task'])){
         }
         echo 'ок';
     }
-    else{
-        echo 'error';
-    }
+    // else{
+    //     echo 'error';
+    // }
 }
 
 

@@ -30,14 +30,15 @@
           <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
 
-            <input class="form__input <?php if(!empty($errorText1)) echo 'form__input--error';?>" type="text" name="name" id="name" value="<?php echo $_POST['name']; ?>" placeholder="Введите название">
-            <?php if (!empty($errorText1)) echo "<p class='form__message'>$errorText1</p>";?>
+            <input class="form__input <?php if(!empty($errorText4)) echo 'form__input--error';?>" type="text" name="name" id="name" value="<?php echo $_POST['name']; ?>" placeholder="Введите название">
+            <?php if(!empty($errorText4)) echo "<p class='form__message'>$errorText4</p>";?>
         </div>
 <!-- добить каждый пункт -->
           <div class="form__row">
             <label class="form__label" for="project">Проект <sup>*</sup></label>
 
-            <select class="form__input form__input--select" name="project" id="project">
+            <select class="form__input form__input--select <?php if(!empty($errorText3)) echo 'form__input--error';?>" name="project" id="project">
+            <?php if(!empty($errorText3)) echo "<p class='form__message'>$errorText3</p>";?>
                 <?php
                 foreach( $masProject as $project){
                     echo '<option value="'.$project['id'].'">'.$project['name'].'</option>';
@@ -49,7 +50,8 @@
           <div class="form__row">
             <label class="form__label" for="date">Дата выполнения</label>
 
-            <input class="form__input form__input--date" type="text" name="date" id="date" value="<?php echo $_POST['date']; ?>" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
+            <input class="form__input form__input--date <?php if(!empty($errorText2)) echo 'form__input--error';?>" type="text" name="date" id="date" value="<?php echo $_POST['date']; ?>" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
+            <?php if(!empty($errorText2)) echo "<p class='form__message'>$errorText2</p>";?>
           </div>
 
           <div class="form__row">
