@@ -203,3 +203,21 @@ function addTask($idUser,$idProject,$nameTask,$fileTask,$deadline){
     $query = mysqli_query($link,"INSERT INTO tasks(idUser,idProject,dateStart,statusTask,nameTask,fileTask,deadline) VALUES('$idUser','$idProject','$dateStart','$status','$nameTask','$fileTask','$deadline')");
     return mysqli_insert_id($link);
 }
+
+function getUserByEmail($email){
+    GLOBAL $link;
+    $query = mysqli_query($link,"SELECT idUser From users WHERE email='".$email."'");
+    $result = mysqli_fetch_array($query);
+    return $result['idUser'];
+}
+
+function addUser($email,$pass,$name){
+    GLOBAL $link;
+    $query = mysqli_query($link,'SELECT idUser FROM users ORDER BY idUser DESC LIMIT 1');
+    $result = mysqli_fetch_array($query);
+    $idUser = $result['idUser']+1;
+    $dateReg = date('Y-m-d H:i:s',time());
+    $pass = password_hash($pass, PASSWORD_DEFAULT);
+    $query = mysqli_query($link,"INSERT INTO users(idUser, dateRegistration, email,nameUser, pass) VALUES('$idUser','$dateReg','$email','$name','$pass')");
+    return mysqli_insert_id($link);
+}

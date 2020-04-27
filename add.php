@@ -2,7 +2,7 @@
 include_once ("./helpers.php");
 require_once 'connection.php';
 
-$idUser = 1;
+$idUser = intval($_SESSION['idUser']);
 if (isset($_POST['submit_task'])){
     $data = array();
     $data['name'] = isset($_POST['name']) ? $_POST['name'] : '';
@@ -36,7 +36,6 @@ if (isset($_POST['submit_task'])){
         if (addTask($idUser,$data['project'],$data['name'],$uploadfile,$data['date'])){
             header('Location: /');
         }
-        echo 'ок';
     }
     // else{
     //     echo 'error';
