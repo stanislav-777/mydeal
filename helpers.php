@@ -221,3 +221,36 @@ function addUser($email,$pass,$name){
     $query = mysqli_query($link,"INSERT INTO users(idUser, dateRegistration, email,nameUser, pass) VALUES('$idUser','$dateReg','$email','$name','$pass')");
     return mysqli_insert_id($link);
 }
+
+
+function getSearchTasks($idUser,$text) {
+    GLOBAL $link;
+    $masTask = array();
+    $query = mysqli_query($link,"SELECT * FROM `tasks` WHERE MATCH(`nameTask`) AGAINST('*$text*' IN BOOLEAN MODE)
+    ") or die("Ошибка " . mysqli_error($link));          
+    while ($data = mysqli_fetch_array($query)) {
+        $masTask[] = array(
+        'idUser' => $data['idUser'],
+        'idProject' => $data['idProject'],
+        'dateStart' => $data['dateStart'],
+        'statusTask' => $data['statusTask'],
+        'nameTask' => $data['nameTask'],
+        'fileTask' => $data['fileTask'],
+        'deadline' => $data['deadline']
+        );
+    }
+    return $masTask;
+}
+
+function issetProjectByName($idUser,$name){
+    GLOBAL $link;
+    $query  = mysqli_query($link,"SELECT COUNT(*) FROM project WHERE idUser=".$idUser." AND nameProject='".$name."'") or die("Ошибка " . mysqli_error($link)); 
+    $result = mysqli_fetch_array($query);
+    return ($result['COUNT(*)']!=0);
+}
+
+function addProject($idUser,$name){
+    GLOBAL $link;
+    $query = mysqli_query($link,"INSERT INTO project(idUser,nameProject) VALUES('$idUser','$name')");
+    return mysqli_insert_id($link);
+}

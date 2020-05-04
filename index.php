@@ -11,7 +11,21 @@ if(isset($_GET['id'])){
     $idProject = intval($_GET['id']);
 }   
 $masProject  = getProjects($idUser);
-$masTask = getTasks($idUser,$idProject);
+if (isset($_GET['btn_search'])){
+    $data = array();
+    $data['text_search'] = isset($_GET['text_search']) ? $_GET['text_search'] : '';
+    if(!empty($data['text_search'])){
+        $data['text_search'] = trim($data['text_search']);
+        $masTask = getSearchTasks($idUser,$data['text_search']);
+    }
+    else{
+        $masTask = getTasks($idUser,$idProject);
+    }
+}
+else{
+    $masTask = getTasks($idUser,$idProject);
+}
+
 if($idProject != 0){
 
 if (!issetProject($idUser,$idProject)){

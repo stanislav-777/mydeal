@@ -23,16 +23,16 @@
                 </nav>
 
                 <a class="button button--transparent button--plus content__side-button"
-                   href="pages/form-project.html" target="project_add">Добавить проект</a>
+                   href="/addProject.php" target="project_add">Добавить проект</a>
             </section>
 
             <main class="content__main">
                 <h2 class="content__main-heading">Список задач</h2>
 
-                <form class="search-form" action="index.php" method="post" autocomplete="off">
-                    <input class="search-form__input" type="text" name="" value="" placeholder="Поиск по задачам">
+                <form class="search-form" action="index.php" method="GET" autocomplete="off">
+                    <input class="search-form__input" type="text" name="text_search" value="" placeholder="Поиск по задачам">
 
-                    <input class="search-form__submit" type="submit" name="" value="Искать">
+                    <input class="search-form__submit" type="submit" name="btn_search" value="Искать">
                 </form>
 
                 <div class="tasks-controls">
@@ -56,6 +56,9 @@
                 <table class="tasks">
                         <?php
                         $flagTaskImportant = '';
+                        if (empty($masTask)){
+                            echo '<h3>Ничего не найдено!</h3>';
+                        }else{
                         foreach($masTask as $task){
                                 if ((bool)($task['statusTask'])){
                                     if ($show_complete_tasks){
@@ -102,6 +105,7 @@
                                     ';
                                 };
                             };
+                        };
                             ?>                    
                 </table>
             </main>
